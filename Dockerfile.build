@@ -1,0 +1,13 @@
+FROM debian:stretch-slim
+
+RUN export DEBIAN_FRONTEND=noninteractive; apt-get update && \
+	apt-get install -y --no-install-recommends python python-pip python-setuptools python-wheel uwsgi uwsgi-plugin-python && \
+	apt-get autoremove -y && \
+	rm -rf /var/lib/apt/lists/*
+
+#RUN mkdir -p /run/docker/plugins && mkfifo /run/docker/plugins/log.sock
+
+ADD / /docker-rawfile-log-driver/
+
+RUN cd /docker-rawfile-log-driver && \
+	pip install -r requirements.txt
